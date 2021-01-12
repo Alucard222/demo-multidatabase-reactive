@@ -4,7 +4,6 @@ import org.neo4j.sdn6.demo.movie.Movie;
 import org.neo4j.sdn6.demo.movie.MovieDTOProjection;
 import org.neo4j.sdn6.demo.movie.MovieProjection;
 import org.neo4j.sdn6.demo.movie.MovieRepository;
-import org.springframework.data.neo4j.core.ReactiveNeo4jClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,11 +15,9 @@ import reactor.core.publisher.Flux;
 public class MovieController {
 
     private final MovieRepository movieRepository;
-    private final ReactiveNeo4jClient client;
 
-    public MovieController(MovieRepository movieRepository, ReactiveNeo4jClient client) {
+    public MovieController(MovieRepository movieRepository) {
         this.movieRepository = movieRepository;
-        this.client = client;
     }
 
     @GetMapping("/{actorName}")
@@ -46,10 +43,5 @@ public class MovieController {
     @GetMapping("/sequels/path/{title}")
     Flux<Movie> getMovieSequelPath(@PathVariable String title){
         return movieRepository.findSequelMoviesPath(title);
-    }
-
-    @GetMapping("/sequels/{title}")
-    Flux<Movie> getMovieSequel(@PathVariable String title){
-        return movieRepository.findSequelMovies(title);
     }
 }

@@ -18,17 +18,11 @@ public interface MovieRepository extends ReactiveNeo4jRepository<Movie, String> 
     @Query("MATCH (m:Movie)<-[r:ACTED_IN]-(p:Person) RETURN m, COLLECT(r), COLLECT(p), labels(m) as __nodeLabels__")
     Flux<Movie> findTotalMovies();
 
-    @Query("MATCH path=(m:Movie)-[r:SEQUEL*]->(s:Movie) WHERE m.title = $title" +
-            " WITH path, nodes(path) as movieList" +
+    @Query("MATCH path=(m:Movie)-[:SEQUEL*]->(s:Movie) WHERE m.title = $title" +
+            " WITH path, nodes(path) as movieList, relationships(path) as r" +
             " UNWIND movieList as movie" +
-            " MATCH (movie:Movie)<-[ra:ACTED_IN]-(p:Person) " +
-            "RETURN path, COLLECT(ra), COLLECT(p)")
+            " MATCH (movie)<-[ra:ACTED_IN]-(p:Person) " +
+            "RETURN movie, COLLECT(r), COLLECT(ra), COLLECT(DISTINCT p)")
     Flux<Movie> findSequelMoviesPath(String title);
-
-    @Query("MATCH (m:Movie)-[r:SEQUEL*]->(s:Movie) WHERE m.title = $title " +
-           "MATCH (m)<-[rm:ACTED_IN]-(pm:Person) " +
-            "MATCH (s)<-[rs:ACTED_IN]-(ps:Person) RETURN m,s,pm,ps,COLLECT(r),COLLECT(rm),COLLECT(rs)")
-    Flux<Movie> findSequelMovies(String title);
-
 
 }
