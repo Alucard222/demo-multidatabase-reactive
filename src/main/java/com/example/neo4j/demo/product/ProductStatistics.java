@@ -17,6 +17,18 @@ public class ProductStatistics {
         this.purchases = purchases;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public double getTotalSpend() {
+        return totalSpend;
+    }
+
+    public int getPurchases() {
+        return purchases;
+    }
+
     @Override public String toString() {
         return "ProductStatistics{" +
                 "description='" + description + '\'' +

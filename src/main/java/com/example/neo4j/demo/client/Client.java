@@ -1,9 +1,9 @@
 package com.example.neo4j.demo.client;
 
-import com.example.neo4j.demo.Ticket.Ticket;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
+import com.example.neo4j.demo.ticket.Ticket;
 
 import java.util.List;
 

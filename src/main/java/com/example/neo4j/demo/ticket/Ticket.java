@@ -1,4 +1,4 @@
-package com.example.neo4j.demo.Ticket;
+package com.example.neo4j.demo.ticket;
 
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;

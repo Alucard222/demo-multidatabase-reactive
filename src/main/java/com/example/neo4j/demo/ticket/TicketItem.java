@@ -1,4 +1,4 @@
-package com.example.neo4j.demo.Ticket;
+package com.example.neo4j.demo.ticket;
 
 import com.example.neo4j.demo.product.Product;
 import org.springframework.data.neo4j.core.schema.GeneratedValue;

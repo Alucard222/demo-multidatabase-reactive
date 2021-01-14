@@ -7,12 +7,7 @@ import reactor.core.publisher.Flux;
 
 public interface ProductRepository extends ReactiveNeo4jRepository<Product, Long> {
 
-    /**
-     * Another example query from the guide.
-     *
-     * @param id
-     * @return
-     */
+
     @Query("MATCH path = (:Client {id: $id})-[:PURCHASED]->()-->(:TicketItem)-->(:Product) RETURN path")
     Flux<Product> findAllByClientId(@Param("id") Long id);
 
@@ -29,11 +24,11 @@ public interface ProductRepository extends ReactiveNeo4jRepository<Product, Long
             + "  WITH product, apoc.math.round(sum(item.netAmount), 2) AS totalSpend,\n"
             + "       count(*) AS purchases\n"
             + "  RETURN product, totalSpend, purchases\n"
-            + "  ORDER BY totalSpend DESC\n"
+            + "  ORDER BY totalSpend DESC LIMIT 100\n"
             + "}\n"
             // The map here is needed to correctly aggregate products from different database
             // and make SDN map it back to a product.
             + "RETURN product{.description}, sum(totalSpend) AS totalSpend, sum(purchases) AS purchases\n"
             + "ORDER BY totalSpend DESC")
-    Flux<ProductStatistics> findTopSellingProductsAcrossMalls();
+    Flux<ProductStatistics> findTop100SellingProductsAcrossMalls();
 }
