@@ -24,7 +24,7 @@ public class ClientReactiveController {
     public ClientReactiveController(ReactiveNeo4jClient client){this.client = client;}
 
     @GetMapping("/top/{count}")
-    Flux<ReactiveClient> getTop(int count){
+    Flux<ReactiveClient> getTopSpendingClients(int count){
         return client
                 .query( "" +
                         "UNWIND fabric.graphIds() AS graphId\n" +

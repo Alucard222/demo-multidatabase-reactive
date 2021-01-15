@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
 
-@Configuration(proxyBeanMethods = false)
+@Configuration
 public class Neo4jConfig {
 
     public static final String KEY_DATABASE_NAME = "database";
