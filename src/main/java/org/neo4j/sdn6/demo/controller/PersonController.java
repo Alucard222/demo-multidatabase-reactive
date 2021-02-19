@@ -23,4 +23,8 @@ public class PersonController {
         return personRepository.tomHanksCareer();
     }
 
+    @GetMapping("/{name}")
+    Flux<PersonEntity> getPersonInfo(@PathVariable String name) {
+        return personRepository.getSubGraph(name);
+    }
 }
