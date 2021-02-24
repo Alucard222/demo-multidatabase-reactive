@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.neo4j.sdn6.demo.BaseNode;
-import org.neo4j.sdn6.demo.city.City;
+import org.neo4j.sdn6.demo.BaseEntity;
+import org.neo4j.sdn6.demo.city.CityEntity;
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
@@ -19,7 +19,7 @@ import java.util.List;
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class PersonEntity extends BaseNode {
+public class PersonEntity extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -33,5 +33,5 @@ public class PersonEntity extends BaseNode {
     private List<PersonEntity> friends;
 
     @Relationship(type = "LIVES_IN", direction = Direction.OUTGOING)
-    private City location;
+    private CityEntity location;
 }

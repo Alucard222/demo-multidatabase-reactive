@@ -7,6 +7,6 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
-public abstract class BaseNode {
+public abstract class BaseEntity {
 
 }
