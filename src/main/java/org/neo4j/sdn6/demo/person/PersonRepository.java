@@ -15,6 +15,11 @@ public interface PersonRepository extends ReactiveNeo4jRepository<PersonEntity, 
     Flux<PersonEntity> findPersonEntitiesByName(String name);
 
     @Query("MATCH (p:Person {name: $name}) " +
+            "MATCH (p)-[r:KNOWS]->(q:Person) " +
+            "RETURN p, COLLECT(r), COLLECT(q)")
+    Flux<PersonEntity> getPath(String name);
+
+    @Query("MATCH (p:Person {name: $name}) " +
             "CALL apoc.path.subgraphAll(p, { " +
             "relationshipFilter: 'KNOWS', " +
             "   labelFilter: 'Person'," +
@@ -24,5 +29,4 @@ public interface PersonRepository extends ReactiveNeo4jRepository<PersonEntity, 
             "YIELD nodes, relationships " +
             "RETURN p, nodes, relationships;")
     Flux<PersonEntity> getSubGraph(String name);
-
 }

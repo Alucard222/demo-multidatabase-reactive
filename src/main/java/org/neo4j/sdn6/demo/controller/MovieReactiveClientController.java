@@ -3,7 +3,6 @@ package org.neo4j.sdn6.demo.controller;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Value;
 import org.neo4j.driver.types.TypeSystem;
-import org.neo4j.sdn6.demo.person.PersonEntity;
 import org.neo4j.sdn6.demo.reactiveDomain.Director;
 import org.neo4j.sdn6.demo.reactiveDomain.MovieDomain;
 import org.springframework.data.neo4j.core.ReactiveNeo4jClient;
@@ -11,9 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -114,36 +111,36 @@ public class MovieReactiveClientController {
                 .one();
     }
 
-    @PostMapping("/merge/{title}")
-    Flux<PersonEntity> merge(@PathVariable String title, @RequestBody List <PersonEntity> input){
-
-        List<HashMap> people = new ArrayList<>();
-        for (int i=0;i<input.size();i++){
-            System.out.println(input.get(i));
-            HashMap hash = new HashMap();
-            hash.put("id", input.get(i).getId());
-            hash.put("name", input.get(i).getName());
-            hash.put("born", input.get(i).getBorn());
-            people.add(hash);
-        }
-
-        return client
-                .query(
-                        "MATCH (movie:Movie {title: $title})"
-                                + " WITH movie "
-                       + "UNWIND $people as person"
-                                + " MERGE (p:Person {name: person.name})"
-                                + " ON CREATE SET p.name = person.name, p.born = person.born"
-                                + " MERGE (p)-[r:ACTED_IN]->(movie) "
-                                + " RETURN p.name as name, p.born as born, ID(p) as id")
-                .bind(title).to("title")
-                .bind(people).to("people")
-                .fetchAs(PersonEntity.class).mappedBy((TypeSystem t, Record record) -> {
-                    PersonEntity person = new PersonEntity(record.get("id").asLong(), record.get("name").asString(), record.get("born").asInt());
-                    return person;
-                })
-                .all();
-    }
+//    @PostMapping("/merge/{title}")
+//    Flux<PersonEntity> merge(@PathVariable String title, @RequestBody List <PersonEntity> input){
+//
+//        List<HashMap> people = new ArrayList<>();
+//        for (int i=0;i<input.size();i++){
+//            System.out.println(input.get(i));
+//            HashMap hash = new HashMap();
+//            hash.put("id", input.get(i).getId());
+//            hash.put("name", input.get(i).getName());
+//            hash.put("born", input.get(i).getBorn());
+//            people.add(hash);
+//        }
+//
+//        return client
+//                .query(
+//                        "MATCH (movie:Movie {title: $title})"
+//                                + " WITH movie "
+//                       + "UNWIND $people as person"
+//                                + " MERGE (p:Person {name: person.name})"
+//                                + " ON CREATE SET p.name = person.name, p.born = person.born"
+//                                + " MERGE (p)-[r:ACTED_IN]->(movie) "
+//                                + " RETURN p.name as name, p.born as born, ID(p) as id")
+//                .bind(title).to("title")
+//                .bind(people).to("people")
+//                .fetchAs(PersonEntity.class).mappedBy((TypeSystem t, Record record) -> {
+//                    PersonEntity person = new PersonEntity(record.get("id").asLong(), record.get("name").asString(), record.get("born").asInt());
+//                    return person;
+//                })
+//                .all();
+//    }
 }
 
 
